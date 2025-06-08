@@ -36,8 +36,12 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Upload para GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+      - name: Garantir que a pasta `docs` exista
+        run: |
+          mkdir -p docs
+          mv public/* docs/
+      - name: Upload de artefatos para o GitHub Pages
+        uses: actions/upload-artifact@v4
         with:
           name: github-pages
           path: ./docs
