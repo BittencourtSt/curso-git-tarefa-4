@@ -1,0 +1,37 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+      - name: Verificar se index.html existe
+        run: |
+          if [ ! -f docs/index.html ]; then
+            echo "Erro: index.html não encontrado!"
+            exit 1
+          fi
+
+  deploy:
+    needs: check-index
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload para GitHub Pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: ./docs
+      - name: Deploy no GitHub Pages
+        uses: actions/deploy-pages@v4
